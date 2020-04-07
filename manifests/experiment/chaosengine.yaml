@@ -1,0 +1,22 @@
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: app-chaos
+spec:
+  annotationCheck: 'true'
+  engineState: 'active'
+  appinfo:
+    appns: 'app'
+    applabel: 'app=app'
+    appkind: 'deployment'
+  chaosServiceAccount: container-kill-sa
+  # use retain to keep the job for debug
+  jobCleanUpPolicy: 'delete' 
+  experiments:
+    - name: container-kill
+      spec:
+        components:
+          env:
+            # specify the name of the container to be killed
+            - name: TARGET_CONTAINER
+              value: 'app'
